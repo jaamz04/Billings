@@ -25,7 +25,23 @@ const signinSchema = Joi.object({
     .pattern(new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")),
 });
 
+const changePasswordSchema = Joi.object({
+  oldPassword: Joi.string()
+    .required()
+    .pattern(new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$"))
+    .messages({
+      "string.pattern.base": "Old password format is incorrect.",
+    }),
+  newPassword: Joi.string()
+    .required()
+    .pattern(new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$"))
+    .messages({
+      "string.pattern.base": "New password must meet security requirements.",
+    }),
+});
+
 module.exports = { 
   signupSchema, 
-  signinSchema 
+  signinSchema,
+  changePasswordSchema,  
 };

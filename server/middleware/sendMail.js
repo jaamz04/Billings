@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 
 const transport = nodemailer.createTransport({
-    // maksend email 500 a day
+   
     service: 'gmail',
     auth:{
         user:process.env.NODE_CODE_SENDING_EMAIL_ADDRESS,

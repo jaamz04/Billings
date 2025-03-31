@@ -14,18 +14,19 @@ exports.identifier = (req, res, next) => {
     }
 
     try {
-        const userToken = token.split(' ')[1];
-        const jwtVerified = jwt.verify(userToken, process.env.TOKEN_SECRET);
-
-        if (jwtVerified) {
-            req.user = jwtVerified;
-            next(); 
-        } else {
-            throw new Error('Error in the token');
+        const tokenParts = token.split(' ');
+        if (tokenParts.length !== 2 || tokenParts[0] !== 'Bearer') {
+            return res.status(403).json({ success: false, message: "Invalid token format" });
         }
 
+        const userToken = tokenParts[1];
+        const jwtVerified = jwt.verify(userToken, process.env.TOKEN_SECRET);
+
+        req.user = jwtVerified;
+        return next();  
+
     } catch (error) {
-        console.log(error);
-        res.status(401).json({ success: false, message: "Invalid token" });
+        console.log("JWT Verification Error:", error.message);
+        return res.status(403).json({ success: false, message: "Invalid token" });
     }
 };
